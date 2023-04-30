@@ -1,15 +1,20 @@
-import java.util.Objects;
-
 public class Employee {
-    public static int id;
+    private static int id;
     public String name;
     public int department;
     public double salary;
 
-    public Employee( String name, int department, double salary) {
+    private final int  idName;
+
+    public Employee(String name, int department, double salary) {
+        idName=id++;
         this.name = name;
         this.department = department;
         this.salary = salary;
+    }
+
+    public static int getId() {
+        return id;
     }
 
     public String getName() {
@@ -34,7 +39,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "id: " + id++ + "\nФИО: " + name + ", отдел: " + department + ", зарплата: $" + salary ;
+        return "id: " + idName+ "\nФИО: " + name + ", отдел: " + department + ", зарплата: $" + salary;
     }
 
 }

@@ -1,4 +1,4 @@
-import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -20,25 +20,31 @@ public class Main {
         System.out.println();
         System.out.println("сумма затрат на зарплаты: $" + sumExpenses(worker));
         System.out.println();
-        System.out.println("минимальная зп сотрудника: $" + minSalary());
+        System.out.println("минимальная зп сотрудника: " + minSalary());
         System.out.println();
-        System.out.println("максимальная зп сотрудника: $" + maxSalary());
+        System.out.println("максимальная зп сотрудника: " + maxSalary());
         System.out.println();
         System.out.println("средняя зп сотрудников: $" + avgSalary());
         System.out.println();
         System.out.println("ФИО сотрудников:");
         System.out.println(workersName());
         System.out.println("повышенная сложность");
+        System.out.println();
         System.out.println(salaryIndexing());
         System.out.println();
         System.out.println("далее задачи выполнены с учетом индексации:");
         System.out.println();
-        System.out.println("* минимальная зп сотрудника 2ого отдела: $" + minSalaryDepartment());
+        System.out.println("* минимальная зп сотрудника 2ого отдела: " + minSalaryDepartment());
         System.out.println();
-        System.out.println("* максимальная зп сотрудника 4ого отдела: $" + maxSalaryDepartment());
+        System.out.println("* максимальная зп сотрудника 4ого отдела: " + maxSalaryDepartment());
         System.out.println();
         System.out.println("* сумма затрат на зп 4ого отдела: $" + sumSalaryDepartment());
         System.out.println();
+        int departmentCoubter = 0;
+        for (int i = 0; i < 5; i++) {
+            departmentCoubter++;
+            System.out.println("* средняя зп "+ departmentCoubter + " отдела: $" + avgSalaryDepartment(departmentCoubter));
+        }
     }
 
     public static char getEmployee() {
@@ -64,21 +70,21 @@ public class Main {
         return roundOff;
     }
 
-    public static double minSalary() {
-        double min = worker[0].salary;
-        for (int i = 0; i < worker.length; i++) {
-            if (min > worker[i].getSalary()) {
-                min = worker[i].salary;
+    public static Employee minSalary() {
+        Employee min = worker[0];
+        for (Employee employee : worker) {
+            if (min.getSalary() > employee.getSalary()) {
+                min = employee;
             }
         }
         return min;
     }
 
-    public static double maxSalary() {
-        double max = worker[0].salary;
-        for (int i = 0; i < worker.length; i++) {
-            if (max < worker[i].getSalary()) {
-                max = worker[i].salary;
+    public static Employee maxSalary() {
+        Employee max = worker[0];
+        for (Employee employee : worker) {
+            if (max.getSalary() < employee.getSalary()) {
+                max = employee;
             }
         }
         return max;
@@ -86,8 +92,8 @@ public class Main {
 
     public static double avgSalary() {
         double avg = 0;
-        for (int i = 0; i < worker.length; i++) {
-            avg = avg + worker[i].getSalary();
+        for (Employee emplyee : worker) {
+            avg = avg + emplyee.getSalary();
         }
         avg = avg / worker.length;
         double roundOff = Math.round(avg * 100.0) / 100.0;
@@ -103,46 +109,61 @@ public class Main {
 
     //повышенная сложность
     public static double salaryIndexing() {
-        for (int i = 0; i < worker.length; i++) {
-            worker[i].salary = worker[i].salary * 1.2;
+        double indexing = 1.2;
+        System.out.println("процент индексации: " + Math.round((indexing - 1) * 100) + "%");
+        IntStream.range(0, worker.length).forEach(i -> {
+            worker[i].salary = worker[i].salary * indexing;
             worker[i].salary = Math.round(worker[i].salary * 100.0) / 100.0;
             System.out.println("зп сотрудника №" + (i + 1) + " после индексации - " + worker[i].salary);
-        }
+        });
         return 0;
     }
 
-    public static double minSalaryDepartment() {
-        double min = worker[0].getSalary();
-        for (int i = 0; i < worker.length; i++) {
-            if (worker[i].getDepartment() == 2) {
-                if (min > worker[i].getSalary()) {
-                    min = worker[i].getSalary();
+    public static Employee minSalaryDepartment() {
+        Employee min = worker[0];
+        for (Employee employee : worker) {
+            if (employee.department == 2) {
+                if (min.getSalary() > employee.getSalary()) {
+                    min = employee;
                 }
             }
         }
         return min;
     }
 
-    public static double maxSalaryDepartment() {
-        double max = worker[0].getSalary();
-        for (int i = 0; i < worker.length; i++) {
-            if (worker[i].getDepartment() == 4) {
-                if (max < worker[i].getSalary()) {
-                    max = worker[i].getSalary();
+    public static Employee maxSalaryDepartment() {
+        Employee min = worker[0];
+        for (Employee employee : worker) {
+            if (employee.department == 4) {
+                if (min.getSalary() < employee.getSalary()) {
+                    min = employee;
                 }
             }
         }
-        return max;
+        return min;
     }
 
     public static double sumSalaryDepartment() {
         double sum = 0d;
-        for (int i = 0; i < worker.length; i++) {
-            if (worker[i].getDepartment() == 4) {
-                sum = sum + worker[i].getSalary();
+        for (Employee employee : worker) {
+            if (employee.getDepartment() == 4) {
+                sum = sum + employee.getSalary();
             }
         }
         double roundOff = Math.round(sum * 100.0) / 100.0;
+        return roundOff;
+    }
+
+    public static double avgSalaryDepartment(int departmentNumber) {
+        double sum = 0d;
+        int departmentCounter = 0;
+        for (Employee employee : worker) {
+            if (employee.getDepartment() == departmentNumber) {
+                departmentCounter++;
+                sum = sum + employee.getSalary();
+            }
+        }
+        double roundOff = Math.round((sum/departmentCounter)* 100.0) / 100.0;
         return roundOff;
     }
 }
