@@ -114,33 +114,33 @@ public class Main {
         IntStream.range(0, worker.length).forEach(i -> {
             worker[i].salary = worker[i].salary * indexing;
             worker[i].salary = Math.round(worker[i].salary * 100.0) / 100.0;
-            System.out.println("зп сотрудника №" + (i + 1) + " после индексации - " + worker[i].salary);
+            System.out.println("зп сотрудника №" + (i + 1) + " после индексации - $" + worker[i].salary);
         });
         return 0;
     }
 
     public static Employee minSalaryDepartment() {
-        Employee min = worker[0];
+        Employee minDep = maxSalary();
         for (Employee employee : worker) {
             if (employee.department == 2) {
-                if (min.getSalary() > employee.getSalary()) {
-                    min = employee;
+                if (minDep.getSalary() > employee.getSalary()) {
+                    minDep = employee;
                 }
             }
         }
-        return min;
+        return minDep;
     }
 
     public static Employee maxSalaryDepartment() {
-        Employee min = worker[0];
+        Employee maxDep = minSalary();
         for (Employee employee : worker) {
             if (employee.department == 4) {
-                if (min.getSalary() < employee.getSalary()) {
-                    min = employee;
+                if (maxDep.getSalary() < employee.getSalary()) {
+                    maxDep = employee;
                 }
             }
         }
-        return min;
+        return maxDep;
     }
 
     public static double sumSalaryDepartment() {
