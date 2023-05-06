@@ -1,9 +1,8 @@
 public class Employee {
     private static int id;
-    public String name;
-    public int department;
-    public double salary;
-
+    private String name;
+    private int department;
+    private double salary;
     private final int  idName;
 
     public Employee(String name, int department, double salary) {
